@@ -1,0 +1,23 @@
+.badge {
+    padding: 6px 11px;
+    color: var(--txt-white);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+.badge-R1 {
+    background-color: var(--main-color-orange);
+}
+
+.badge-R2 {
+    background-color: var(--main-color-blue);
+}
+
+.badge-R3 {
+    background-color: var(--main-color-cyan);
+}
+
+.badge-R4 {
+    background-color: var(--main-color-green);
+}
+
