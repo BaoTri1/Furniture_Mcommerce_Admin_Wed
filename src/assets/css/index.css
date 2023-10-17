@@ -84,6 +84,7 @@ input:focus {
 }
 
 .page-header {
+    margin-top: 40px;
     margin-bottom: 40px;
     text-transform: capitalize;
 }
@@ -108,7 +109,7 @@ input:focus {
     text-transform: capitalize;
 }
 
-.card > div ~ div {
+.card>div~div {
     margin-top: 30px;
 }
 
@@ -150,4 +151,48 @@ input:focus {
 .orange-color {
     background-color: var(--main-color-orange);
     color: #fff;
+}
+
+.top-page {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--topnav-height);
+}
+
+.top-page-form {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: var(--topnav-height);
+}
+
+.btn-design {
+    height: 50px;
+    margin-right: 40px;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+    color: var(--txt-white);
+    background-color: var(--main-color);
+    box-shadow: var(--box-shadow);
+}
+
+.page-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.customLink:hover {
+    color: var(--txt-white);
 }

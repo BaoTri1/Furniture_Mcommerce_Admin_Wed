@@ -7,6 +7,7 @@ import './layout.css'
 import Sidebar from '../sidebar/sidebar';
 import Topnav from '../topnav/topnav';
 import Routes from '../Routes';
+import Login from '../../pages/Login';
 import ThemeAction from '../../redux/actons/ThemeAction';
 
 const Layout = () => {
@@ -25,9 +26,12 @@ const Layout = () => {
     }, [dispatch])
 
     return (
+
         <BrowserRouter>
             <Route
-                render={(props) => (
+                render={(props) => {
+                    return !sessionStorage.getItem('accessToken') ? <Login />
+                    :
                     <div className={`layout ${themeReducer.mode} ${themeReducer.color}`}>
                         <Sidebar {...props} />
                         <div className='layout__content'>
@@ -37,9 +41,10 @@ const Layout = () => {
                             </div>
                         </div>
                     </div>
-                )}
+                }}
             />
         </BrowserRouter>
+       
     )
 }
 

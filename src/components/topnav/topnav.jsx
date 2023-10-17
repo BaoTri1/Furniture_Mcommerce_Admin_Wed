@@ -7,13 +7,14 @@ import Dropdown from '../dropdown/Dropdown'
 import ThemeMenu from '../thememenu/ThemeMenu'
 
 import notifications from '../../assets/JsonData/notification.json'
-import user_image from '../../assets/images/tuat.png'
 import user_menu from '../../assets/JsonData/user_menus.json'
 
 const curr_user = {
-  display_name: 'Tuan Tran',
-  image: user_image
+  display_name: sessionStorage.getItem('name'),
+  image: sessionStorage.getItem('avatar')
 }
+
+console.log(curr_user.display_name, curr_user.image)
 
 const renderUserToggle = (user) => (
   <div className="topnav__right-user">
@@ -45,10 +46,6 @@ const rendernotificationItem = (item, index) => (
 const Topnav = () => {
   return (
     <div className='topnav'>
-      <div className="topnav__search">
-        <input type="text" placeholder='Tìm kiếm tại đây...' />
-        <i className='bx bx-search'></i>
-      </div>
       <div className="topnav__right">
         <div className="top__right-item">
           <Dropdown
