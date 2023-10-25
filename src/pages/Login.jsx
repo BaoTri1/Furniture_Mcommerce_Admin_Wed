@@ -42,6 +42,7 @@ const Login = () => {
 
         } catch (error) {
             console.error('Đăng nhập thất bại', error);
+            error('Đăng nhập thất bại')
         }
         
     }

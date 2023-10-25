@@ -28,7 +28,6 @@ ReactDOM.render(
                 <Layout />
             </React.StrictMode>
         </ToastProvider>
-
     </Provider>,
     document.getElementById('root')
 )

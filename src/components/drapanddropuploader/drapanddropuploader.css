@@ -1,0 +1,90 @@
+.wrapper-select-image {
+    padding: 10px;
+    border-radius: var(--border-radius);
+    border: 1px solid #F5F5F5;
+    overflow: hidden;
+}
+
+.wrapper-select-image .top {
+    text-align: center;
+}
+
+.wrapper-select-image p {
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.wrapper-select-image .drag-area {
+    height: 150px;
+    border-radius: var(--border-radius);
+    border: 2px dashed var(--main-color);
+    color: var(--main-color);
+    background: var(--main-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+    margin-top: 10px;
+}
+
+.wrapper-select-image .drag-area .visible {
+    font-size: 18px;
+}
+
+.wrapper-select-image .select {
+    color: var(--main-color);
+    margin-left: 5px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.wrapper-select-image .select:hover {
+    opacity: 0.6;
+
+}
+
+.wrapper-select-image .container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.wrapper-select-image .container .image {
+    width: 75px;
+    margin-right: 5px;
+    height: 75px;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.wrapper-select-image .container .image img {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius);
+}
+
+.wrapper-select-image .container .image span {
+    position: absolute;
+    top: -2px;
+    right: 9px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.wrapper-select-image input,
+.wrapper-select-image .drag-area .on-drop,
+.wrapper-select-image .drag-area.dragover .visible {
+    display: none;
+}
+
+.delete {
+    z-index: 999;
+    color: var(--main-color);
+}

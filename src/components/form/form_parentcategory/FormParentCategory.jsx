@@ -79,7 +79,7 @@ const FormParentCategory = () => {
                 </h2>
             </div>
             <div className="row wrapper">
-                <div className="form">
+                <div className="form" style={{maxWidth: '350px'}}>
                     <div className="input-container">
                         <input id='inputName' type="text" placeholder="Nhập tên nhóm danh mục..." onChange={(e) => setNameParentCategory(e.target.value)} />
                         <span>

@@ -106,7 +106,7 @@ const FormCategory = () => {
         </h2>
       </div>
       <div className="row wrapper">
-        <div className="form">
+        <div className="form" style={{maxWidth: '350px'}}>
           <div className="input-container">
             <input id='inputName' type="text" placeholder="Nhập tên danh mục" onChange={(e) => setNameCategory(e.target.value)} />
             <span>

@@ -196,3 +196,13 @@ input:focus {
 .customLink:hover {
     color: var(--txt-white);
 }
+
+.img__product {
+    width: 150px;
+    height: 150px;
+}
+
+.img__product > img {
+    width: 100%;
+    height: 100%;
+}

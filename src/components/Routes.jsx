@@ -9,13 +9,16 @@ import Categorys from '../pages/Category';
 import FormCategory from './form/form_category/FormCategory';
 import FormTypeRoom from './form/form_typeroom/FormTypeRoom';
 import FormParentCategory from './form/form_parentcategory/FormParentCategory';
+import FormProduct from './form/form_product/FormProduct';
 
 const Routes = () => {
   return (
     <Switch>
         <Route path='/' exact component={Dashboard}/>
         <Route path='/users' component={Customers}/>
-        <Route path='/products' component={Products}/>
+        <Route path='/products' exact component={Products}/>
+        <Route path='/products/edit/:product' component={FormProduct}/>
+        <Route path='/products/addProduct' component={FormProduct}/>
         <Route path='/categories' exact component={Categorys}/>
         <Route path='/categories/addCategory' component={FormCategory}/>
         <Route path='/categories/edit/:category' component={FormCategory}/>
