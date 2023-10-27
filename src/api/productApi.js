@@ -27,6 +27,11 @@ const productApi = {
         return axios.get(url);
     },
 
+    getListcatParent: () => {
+        const url = process.env.REACT_APP_API_URL + `categories/parentCategory/all`;
+        return axios.get(url);
+    },
+
     addCategory: (params) => {
         const url = process.env.REACT_APP_API_URL + 'categories/addCategory';
         return axios.post(url, params, {
@@ -120,6 +125,14 @@ const productApi = {
     getListProductByPage: (paramString) => {
         const url = process.env.REACT_APP_API_URL + `products/?${paramString}`;
         return axios.get(url);
+    },
+
+    getListProduct: () => {
+        const url = process.env.REACT_APP_API_URL + `products/all`;
+        return axios.get(url, {
+            headers: {
+                Authorization: sessionStorage.getItem('accessToken'),
+        }});
     },
 
     getInfoProduct: (id) => {

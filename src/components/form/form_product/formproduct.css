@@ -1,13 +1,13 @@
 .table-form-product:hover {
-    background-color: var(--txt-white);
+    background-color: var(--main-bg);
 }
 
-.table-tbody-product>tr:hover {
-    background-color: var(--txt-white);
+.table-tbody-product > tr:hover {
+    background-color: var(--main-bg);
 }
 
 .table-td-label {
-    max-width: 130px;
+    max-width: 150px;
     position: sticky;
 }
 

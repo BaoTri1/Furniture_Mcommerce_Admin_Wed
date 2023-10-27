@@ -1,5 +1,5 @@
 .form {
-    background-color: #fff;
+    background-color: var(--main-bg);
     display: block;
     padding: 1rem;
     /* max-width: 350px; */
@@ -29,7 +29,8 @@
 }
 
 .input-container input {
-    background-color: #fff;
+    background-color: var(--main-bg);
+    color: var(--txt-color);
     padding: 1rem;
     padding-right: 3rem;
     font-size: 0.875rem;
@@ -40,7 +41,7 @@
 }
 
 .input-container textarea {
-    background-color: #fff;
+    background-color: var(--main-bg);
     padding: 1rem;
     padding-right: 3rem;
     font-size: 0.875rem;

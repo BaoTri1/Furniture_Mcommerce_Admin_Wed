@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import queryString from 'query-string'
 
 import Search from '../components/search/Search'
@@ -9,6 +9,11 @@ import { useToast } from '../context/toast'
 import ConfirmDialog from '../components/confirmdialog/ConfirmDialog'
 import productApi from '../api/productApi'
 import Paginate from '../components/paginate/paginate'
+
+const VND = new Intl.NumberFormat('vi-VN', {
+  style: 'currency',
+  currency: 'VND',
+});
 
 const productHead = [
   'ID',
@@ -24,6 +29,56 @@ const productHead = [
   ''
 ]
 
+const priceFilter = [
+  {
+    id: '0-1000000000',
+    value: 'Tất cả'
+  },
+  {
+    id: '0-10000000',
+    value: `Dưới ${VND.format(10000000)}`
+  },
+  {
+    id: '10000000-20000000',
+    value: `${VND.format(10000000)} - ${VND.format(20000000)}`
+  },
+  {
+    id: '20000000-30000000',
+    value: `${VND.format(20000000)} - ${VND.format(30000000)}`
+  },
+  {
+    id: '30000000-1000000000',
+    value: `${VND.format(30000000)} trở lên`
+  },
+]
+
+const ratingFilter = [
+  {
+    id: 'rating1',
+    value: 'Tất cả'
+  },
+  {
+    id: 'rating2',
+    value: '1 Sao'
+  },
+  {
+    id: 'rating3',
+    value: '2 Sao'
+  },
+  {
+    id: 'rating4',
+    value: '3 Sao'
+  },
+  {
+    id: 'rating5',
+    value: '4 Sao'
+  },
+  {
+    id: 'rating6',
+    value: '5 Sao'
+  },
+]
+
 const renderProductHead = (item, index) => (
   <th key={index}>{item}</th>
 )
@@ -34,6 +89,10 @@ const Products = () => {
   const [filterProduct, setFilterProduct] = useState({
     page: 1,
     limit: 20,
+    category: '',
+    price: '0-1000000000',
+    typeroom: '',
+    search: ''
   });
   const [open, setopen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
@@ -42,6 +101,17 @@ const Products = () => {
   const [contentDialog, setContentDialog] = useState('');
   const [id, setID] = useState('');
   const { error, success } = useToast();
+
+  const [listCategory, setListCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const [listTypeRoom, setListTypeRoom] = useState([]);
+  const [selectedTypeRoom, setSelectedTypeRoom] = useState('');
+
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState('0-1000000000');
+  //const [selectedRatingFilter, setSelectedRatingFilter] = useState('rating1');
+
+  const typingTimeoutRef = useRef(null);
 
   useEffect(() => {
     const getListProduct = async () => {
@@ -65,6 +135,48 @@ const Products = () => {
     }
     getListProduct();
   }, [filterProduct])
+
+  useEffect(() => {
+    const getListCategory = async () => {
+      try {
+        //const paramsString = queryString.stringify({page: 24});
+        const response = await productApi.getListCategory();
+        console.log(response.data);
+        if (response.data.results.errCode === 0) {
+          console.log(response.data.results.data);
+          const newList = [{ idCat: '', nameCat: 'Tất cả' }, ...response.data.results.data];
+          setListCategory(newList);
+        } else {
+          console.log(response.data.results.errMessage)
+        }
+
+      } catch (error) {
+        console.error('Call API failed', error);
+      }
+    }
+    getListCategory();
+  }, []);
+
+  useEffect(() => {
+    const getLisTypeRoom = async () => {
+      try {
+        //const paramsString = queryString.stringify({page: 24});
+        const response = await productApi.getListTyperoom();
+        console.log(response.data);
+        if (response.data.results.errCode === 0) {
+          console.log(response.data.results.data);
+          const newList = [{ idRoom: '', nameRoom: 'Tất cả' }, ...response.data.results.data];
+          setListTypeRoom(newList);
+        } else {
+          console.log(response.data.results.errMessage)
+        }
+
+      } catch (error) {
+        console.error('Call API failed', error);
+      }
+    }
+    getLisTypeRoom();
+  }, []);
 
   const renderProductBody = (item, index) => (
     <tr key={index}>
@@ -93,11 +205,6 @@ const Products = () => {
     </tr>
   )
 
-  const VND = new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-  });
-
   const openDialogConfirm = (title, content, idDelete) => {
     setTitleDialog(title);
     setContentDialog(content);
@@ -121,6 +228,72 @@ const Products = () => {
     }
   }
 
+  const handleSearch = (e) => {
+    const value = e.target.value;
+
+    if (value === '') {
+      typingTimeoutRef.current = setTimeout(() => {
+        setFilterProduct({
+          ...filterProduct,
+          page: 1,
+          search: ''
+        })
+        setIsHidden(false);
+      }, 300);
+    }
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      setFilterProduct({
+        ...filterProduct,
+        page: 1,
+        search: value
+      })
+      setIsHidden(false);
+    }, 300);
+  }
+
+  const handleSelectCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    // console.log('category', selectedCategory);
+    setFilterProduct({
+      ...filterProduct,
+      page: 1,
+      category: event.target.value === 'Tất cả' ? '' : event.target.value
+    })
+    setIsHidden(false);
+  };
+
+  const handleSelectTypeRoomChange = (event) => {
+     setSelectedTypeRoom(event.target.value);
+    setFilterProduct({
+      ...filterProduct,
+      page: 1,
+      typeroom: event.target.value === 'Tất cả' ? '' : event.target.value
+    })
+    setIsHidden(false);
+  };
+
+  const handleSelectPriceFilterChange = (event) => {
+    setSelectedPriceFilter(event.target.value);
+    setFilterProduct({
+      ...filterProduct,
+      page: 1,
+      price: event.target.value === 'Tất cả' ? '' : event.target.value
+    })
+    setIsHidden(false);
+  };
+
+
+  // const handleSelectRatingChange = (event) => {
+  //   setSelectedRatingFilter(event.target.value);
+  //   console.log('rating', selectedRatingFilter);
+  // };
+
+
   const handlePageChange = (event) => {
     console.log('page-product', event.selected + 1)
     setFilterProduct({
@@ -138,9 +311,51 @@ const Products = () => {
             <Link to='/products/addProduct'><button className='btn-design'>Thêm mới</button></Link>
           </div>
           <Search
-          //onchange={handleSearchCategory}
+            onchange={handleSearch}
           />
         </div>
+      </div>
+      <div className="page-filter">
+        <h5 className='lable-filter'>Lọc theo danh mục:</h5>
+        <div className='container-select'>
+          <select value={selectedCategory} onChange={handleSelectCategoryChange}>
+            {listCategory.map((option, index) => (
+              <option key={index} value={option.nameCat}>
+                {option.nameCat}
+              </option>
+            ))}
+          </select>
+        </div>
+        <h5 className='lable-filter'>Lọc theo giá:</h5>
+        <div className='container-select'>
+          <select value={selectedPriceFilter} onChange={handleSelectPriceFilterChange}>
+            {priceFilter.map((option, index) => (
+              <option key={index} value={option.id}>
+                {option.value}
+              </option>
+            ))}
+          </select>
+        </div>
+        <h5 className='lable-filter'>Lọc theo loại phòng:</h5>
+        <div className='container-select'>
+          <select value={selectedTypeRoom} onChange={handleSelectTypeRoomChange}>
+            {listTypeRoom.map((option, index) => (
+              <option key={index} value={option.nameRoom}>
+                {option.nameRoom}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* <h5 className='lable-filter'>Lọc theo dánh giá sản phẩm:</h5>
+        <div className='container-select'>
+            <select value={selectedRatingFilter} onChange={handleSelectRatingChange}>
+                {ratingFilter.map((option, index) => (
+                    <option key={index} value={option.id}>
+                        {option.value}
+                    </option>
+                ))}
+            </select>
+        </div> */}
       </div>
       <div className="row">
         <div className="col-12 full-height">
@@ -155,11 +370,11 @@ const Products = () => {
             </div>
             <div className="card__footer">
               {
-                !isHidden ? 
-                <div><Paginate
-                  totalPage={totalPage}
-                  handlePageChange={handlePageChange}
-                /></div> : <div></div>
+                !isHidden ?
+                  <div><Paginate
+                    totalPage={totalPage}
+                    handlePageChange={handlePageChange}
+                  /></div> : <div></div>
               }
             </div>
           </div>

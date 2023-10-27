@@ -200,6 +200,11 @@ const FormProduct = () => {
             return;
         }
 
+        if (!quantity || quantity <= 0) {
+            error("Số lượng sản phẩm không hợp lệ!");
+            return;
+        }
+
         if (!material) {
             error("Trường vật liệu không được bỏ trống!");
             return;

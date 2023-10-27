@@ -6,10 +6,12 @@ import Dashboard from '../pages/Dashboard';
 import Customers from '../pages/Customer';
 import Products from '../pages/Products';
 import Categorys from '../pages/Category';
+import Discount from '../pages/Discount';
 import FormCategory from './form/form_category/FormCategory';
 import FormTypeRoom from './form/form_typeroom/FormTypeRoom';
 import FormParentCategory from './form/form_parentcategory/FormParentCategory';
 import FormProduct from './form/form_product/FormProduct';
+import FormDiscount from './form/form_discount/FormDiscount';
 
 const Routes = () => {
   return (
@@ -26,6 +28,9 @@ const Routes = () => {
         <Route path='/categories/TypeRoom/edit/:typeroom' component={FormTypeRoom}/>
         <Route path='/categories/addParentCategory' component={FormParentCategory}/>
         <Route path='/categories/ParentCategory/edit/:parentcategory' component={FormParentCategory}/>
+        <Route path='/discount' exact component={Discount}/>
+        <Route path='/discount/add' component={FormDiscount}/>
+        <Route path='/discount/edit/:discount' component={FormDiscount}/>
     </Switch>
   )
 }
