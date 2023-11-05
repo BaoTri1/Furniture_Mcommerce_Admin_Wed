@@ -95,12 +95,12 @@ const Discount = () => {
                 const paramsString = queryString.stringify(filterDiscount);
                 const response = await discountApi.getListDiscountByPage(paramsString);
                 console.log(response.data);
-                if (response.data.results.errCode === 0) {
-                    console.log(response.data.results.data);
-                    setListDiscount(response.data.results.data);
-                    setTotalPage(response.data.results.total_page);
+                if (response.data.errCode === 0) {
+                    console.log(response.data.discounts);
+                    setListDiscount(response.data.discounts);
+                    setTotalPage(response.data.total_page);
                 } else {
-                    console.log(response.data.results.errMessage)
+                    console.log(response.data.errMessage)
                     setListDiscount([])
                     setIsHidden(true)
                 }

@@ -119,12 +119,12 @@ const Products = () => {
         const paramsString = queryString.stringify(filterProduct);
         const response = await productApi.getListProductByPage(paramsString);
         console.log(response.data);
-        if (response.data.results.errCode === 0) {
-          console.log(response.data.results.data);
-          setListProduct(response.data.results.data);
-          setTotalPage(response.data.results.total_page);
+        if (response.data.errCode === 0) {
+          console.log(response.data.data);
+          setListProduct(response.data.products);
+          setTotalPage(response.data.total_page);
         } else {
-          console.log(response.data.results.errMessage)
+          console.log(response.data.errMessage)
           setListProduct([])
           setIsHidden(true)
         }

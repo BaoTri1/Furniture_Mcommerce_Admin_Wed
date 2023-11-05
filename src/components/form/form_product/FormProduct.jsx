@@ -85,23 +85,23 @@ const FormProduct = () => {
             const getInfoProduct = async () => {
                 const paramsString = queryString.stringify({ id: productinfo.idProduct });
                 const response = await productApi.getInfoProduct(paramsString);
-                console.log(response.data.results);
-                if (response.data.results.errCode === 0) {
-                    document.getElementById('inputName').value = response.data.results.data.nameProduct;
-                    setNameProduct(response.data.results.data.nameProduct)
-                    setSelectCategory(response.data.results.data.idCat);
-                    setSelectTypeRoom(!response.data.results.data.idRoom ? '' : response.data.results.data.idRoom);
-                    document.getElementById('inputPrice').value = response.data.results.data.price;
-                    setPrice(response.data.results.data.price)
-                    document.getElementById('inputMaterial').value = response.data.results.data.material;
-                    setMaterial(response.data.results.data.material)
-                    document.getElementById('inputsize').value = response.data.results.data.size;
-                    setSize(response.data.results.data.size)
-                    document.getElementById('inputQuantity').value = response.data.results.data.quantity;
-                    setQuantity(response.data.results.data.quantity);
-                    document.getElementById('input-description').value = response.data.results.data.description;
-                    setDescribe(response.data.results.data.description)
-                    setUpListImage(response.data.results.data.imgUrl, response.data.results.data.listImageDetail);
+                console.log(response.data);
+                if (response.data.errCode === 0) {
+                    document.getElementById('inputName').value = response.data.product.nameProduct;
+                    setNameProduct(response.data.product.nameProduct)
+                    setSelectCategory(response.data.product.idCat);
+                    setSelectTypeRoom(!response.data.product.idRoom ? '' : response.data.product.idRoom);
+                    document.getElementById('inputPrice').value = response.data.product.price;
+                    setPrice(response.data.product.price)
+                    document.getElementById('inputMaterial').value = response.data.product.material;
+                    setMaterial(response.data.product.material)
+                    document.getElementById('inputsize').value = response.data.product.size;
+                    setSize(response.data.product.size)
+                    document.getElementById('inputQuantity').value = response.data.product.quantity;
+                    setQuantity(response.data.product.quantity);
+                    document.getElementById('input-description').value = response.data.product.description;
+                    setDescribe(response.data.product.description)
+                    setUpListImage(response.data.product.imgUrl, response.data.product.listImageDetail);
                 }
             }
             getInfoProduct();

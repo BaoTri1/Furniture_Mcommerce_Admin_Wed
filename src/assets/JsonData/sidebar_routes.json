@@ -28,5 +28,10 @@
         "display_name": "Quản lý khuyến mãi",
         "route": "/discount",
         "icon": "bx bx-gift"
-    }
+    },
+    {
+        "display_name": "Quản lý đánh giá",
+        "route": "/reviews",
+        "icon": "bx bx-comment"
+    }  
 ]

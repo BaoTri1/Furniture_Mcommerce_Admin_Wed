@@ -22,18 +22,18 @@ const Login = () => {
                 error('Phải nhập số điện thoại và mật khẩ để đăng nhập');
             } else {
                 const response = await userApi.login({ sdt: username, passwd: password });
-                console.log(response.data.userData.errCode);
-                if(response.data.userData.errCode !== 0){
-                    error(response.data.userData.errMessage);
+                console.log(response.data);
+                if(response.data.errCode !== 0){
+                    error(response.data.errMessage);
                 }else {
-                    if(response.data.userData.isAdmin !== 1){
+                    if(response.data.isAdmin !== 1){
                         error('Bạn không phải là người quản trị. Hãy sử dụng tài khoản quản trị.');
                         return;
                     }
-                    console.log(response.data.userData);
-                    sessionStorage.setItem('accessToken', response.data.userData.access_token);
-                    sessionStorage.setItem('avatar', response.data.userData.userInfor.avatar);
-                    sessionStorage.setItem('name', response.data.userData.userInfor.fullName);
+                    console.log(response.data);
+                    sessionStorage.setItem('accessToken', response.data.access_token);
+                    sessionStorage.setItem('avatar', response.data.user.avatar);
+                    sessionStorage.setItem('name', response.data.user.fullName);
                     success("Đăng nhập thành công");
                     history.replace('/');
                     window.location.reload();
