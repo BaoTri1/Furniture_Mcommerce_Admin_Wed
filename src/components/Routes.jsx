@@ -12,6 +12,8 @@ import FormTypeRoom from './form/form_typeroom/FormTypeRoom';
 import FormParentCategory from './form/form_parentcategory/FormParentCategory';
 import FormProduct from './form/form_product/FormProduct';
 import FormDiscount from './form/form_discount/FormDiscount';
+import Order from '../pages/Order';
+import FormOrder from './form/form_order/FormOrder';
 
 const Routes = () => {
   return (
@@ -31,6 +33,9 @@ const Routes = () => {
         <Route path='/discount' exact component={Discount}/>
         <Route path='/discount/add' component={FormDiscount}/>
         <Route path='/discount/edit/:discount' component={FormDiscount}/>
+        <Route path='/orders' exact component={Order}/>
+        <Route path='/orders/:orders' component={FormOrder}/>
+        <Route path='/orders/edit/:orders' component={FormOrder}/>
     </Switch>
   )
 }

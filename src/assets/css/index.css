@@ -203,7 +203,6 @@ input:focus {
 }
 
 .lable-filter {
-    margin: 10px 20px;
     text-transform: capitalize;
 }
 
@@ -228,9 +227,10 @@ input:focus {
     background-color: var(--main-bg);
     display: flex;
     align-items: center;
-    box-shadow: var( --box-shadow);
+    box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     overflow: hidden;
+    text-align: center;
 }
 
 .container-select > select {

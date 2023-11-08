@@ -316,7 +316,7 @@ const Products = () => {
         </div>
       </div>
       <div className="page-filter">
-        <h5 className='lable-filter'>Lọc theo danh mục:</h5>
+        <h5 className='lable-filter' style={{paddingTop: 20, paddingRight: 20, paddingLeft: 20}}>Lọc theo danh mục:</h5>
         <div className='container-select'>
           <select value={selectedCategory} onChange={handleSelectCategoryChange}>
             {listCategory.map((option, index) => (
@@ -326,7 +326,7 @@ const Products = () => {
             ))}
           </select>
         </div>
-        <h5 className='lable-filter'>Lọc theo giá:</h5>
+        <h5 className='lable-filter' style={{paddingTop: 20, paddingRight: 20, paddingLeft: 20}}>Lọc theo giá:</h5>
         <div className='container-select'>
           <select value={selectedPriceFilter} onChange={handleSelectPriceFilterChange}>
             {priceFilter.map((option, index) => (
@@ -336,7 +336,7 @@ const Products = () => {
             ))}
           </select>
         </div>
-        <h5 className='lable-filter'>Lọc theo loại phòng:</h5>
+        <h5 className='lable-filter' style={{paddingTop: 20, paddingRight: 20, paddingLeft: 20}}>Lọc theo loại phòng:</h5>
         <div className='container-select'>
           <select value={selectedTypeRoom} onChange={handleSelectTypeRoomChange}>
             {listTypeRoom.map((option, index) => (
