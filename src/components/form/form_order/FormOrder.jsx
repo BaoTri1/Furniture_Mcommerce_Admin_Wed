@@ -301,11 +301,15 @@ const FormOrder = () => {
                             />
                         </div>
                     </div>
-                    <div className="btn-wrapper" style={{ marginTop: 20 }}>
-                        <button type="submit" className="submit btn-submit-product" onClick={handleUpdateOrder}>
-                                Cập nhật đơn hàng  
-                        </button>
-                    </div> 
+                    {
+                        isEdit ? 
+                        <div className="btn-wrapper" style={{ marginTop: 20 }}>
+                            <button type="submit" className="submit btn-submit-product" onClick={handleUpdateOrder}>
+                                    Cập nhật đơn hàng  
+                            </button>
+                        </div> 
+                        : <></>
+                    }
                 </div>
             </div>                           
         </div>

@@ -16,25 +16,25 @@ import Dropdown from '../components/dropdown/Dropdown';
 
 import orderApi from '../api/orderApi'
 
+const dayjs = require('dayjs');
+
 const VND = new Intl.NumberFormat('vi-VN', {
   style: 'currency',
   currency: 'VND',
 });
 
 const formatDate = (dateString) => {
-  console.log(dateString)
-  var dateObject = new Date(dateString);
+  // Tạo đối tượng Date từ chuỗi thời gian
+  var inputTime = new Date(dateString);
 
-  var isoString = dateObject.toISOString();
+  // Lấy các thành phần ngày, tháng, năm
+  var year = inputTime.getUTCFullYear();
+  var month = ('0' + (inputTime.getUTCMonth() + 1)).slice(-2);  // Thêm số 0 ở đầu nếu cần
+  var day = ('0' + inputTime.getUTCDate()).slice(-2);  // Thêm số 0 ở đầu nếu cần
 
-  var day = new Date(isoString).getDate();
-  var month = new Date(isoString).getMonth() + 1; // Tháng bắt đầu từ 0, nên cộng thêm 1
-  var year = new Date(isoString).getFullYear();
-
-  var formattedDay = (day < 10) ? '0' + day : day;
-  var formattedMonth = (month < 10) ? '0' + month : month;
-
-  return `${year}-${formattedMonth}-${formattedDay}`
+  // Format lại theo YYYY-MM-DD
+  var outputTimeStr = year + '-' + month + '-' + day;
+  return outputTimeStr;
 
 }
 
@@ -90,10 +90,20 @@ const paymentStatus = {
   0: 'R5'
 }
 
-const paymentfilter = {
-  1: 'Đã thanh toán',
-  0: 'Chưa thann toán'
-}
+const paymentfilter = [
+  {
+    id: '',
+    value: 'Tất cả'
+  },
+  {
+    id: '1',
+    value: 'Đã thanh toán'
+  },
+  {
+    id: '0',
+    value: 'Chưa thann toán'
+  },
+]
 
 const Order = () => {
 
@@ -104,7 +114,8 @@ const Order = () => {
     dayCreate: '',
     dayUpdate: '',
     search: '',
-    price:'0-1000000000',
+    price: '0-1000000000',
+    payStatus: ''
   });
 
   const [open, setopen] = useState(false);
@@ -120,7 +131,9 @@ const Order = () => {
   const [listStatus, setListStatus] = useState([]);
   const [selectStatus, setSelectStatus] = useState('');
   const [dayCreate, setDayCreate] = useState(new Date());
+  const [dayUpdate, setDayUpdate] = useState(new Date());
   const [selectedPriceFilter, setSelectedPriceFilter] = useState('0-1000000000');
+  const [selectedPayStatus, setSelectedPayStatus] = useState('');
 
   useEffect(() => {
     const getListOrder = async () => {
@@ -178,16 +191,16 @@ const Order = () => {
       <td><Link to={{
         pathname: `/orders/${item.idOrder}`,
         state: { idOrder: item.idOrder, isEdit: false }
-        }}
+      }}
         className='customLink'>
         <i className='bx bx-show' style={{ fontSize: '1.7rem' }}></i></Link></td>
       <td><Link to={{
         pathname: `/orders/edit/${item.idOrder}`,
-        state: { idOrder: item.idOrder, isEdit: true}
-        }}
+        state: { idOrder: item.idOrder, isEdit: true }
+      }}
         className='customLink'>
         <i className='bx bx-edit-alt' style={{ fontSize: '1.7rem' }}></i></Link>
-          
+
       </td>
     </tr>
   )
@@ -273,15 +286,53 @@ const Order = () => {
     setIsHidden(false);
   };
 
+  const handleSelectPayStatusChange = (event) => {
+    setSelectedPayStatus(event.target.value);
+    setFilterOrder({
+      ...filterOrder,
+      page: 1,
+      payStatus: event.target.value === 'Tất cả' ? '' : event.target.value
+    })
+    setIsHidden(false);
+  };
+
   const handleSelectDateCreate = (date) => {
-      console.log(formatDate(date))
-      setDayCreate(date)
+    console.log(formatDate(date))
+    setDayCreate(date);
+    setFilterOrder({
+      ...filterOrder,
+      page: 1,
+      dayCreate: formatDate(date)
+    })
+    setIsHidden(false);
+  }
+
+  const handleSelectDateUpdate = (date) => {
+    console.log(formatDate(date))
+    setDayUpdate(date)
+    setFilterOrder({
+      ...filterOrder,
+      page: 1,
+      dayUpdate: formatDate(date)
+    })
+    setIsHidden(false);
+  }
+
+  const handleClearFilter = () => {
       setFilterOrder({
-        ...filterOrder,
         page: 1,
-        dayCreate: formatDate(date)
-      })
-      setIsHidden(false);
+        limit: 20,
+        dayCreate: '',
+        dayUpdate: '',
+        search: '',
+        price: '0-1000000000',
+        payStatus: ''
+      });
+      setSelectStatus('');
+      setSelectedPriceFilter('0-1000000000');
+      setSelectedPayStatus('');
+      setDayCreate(new Date());
+      setDayUpdate(new Date());
   }
 
 
@@ -290,6 +341,9 @@ const Order = () => {
       <div className="top-page">
         <h2 className='page-header'>Quản lý đơn hàng</h2>
         <div className='page-actions'>
+          <div>
+            <button onClick={handleClearFilter} className='btn-design'>Xóa bộ lọc</button>
+          </div>
           <Search
             onchange={handleSearch}
           />
@@ -309,14 +363,34 @@ const Order = () => {
         <h5 className='lable-filter' style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20 }}>Lọc theo ngày tạo:</h5>
         <div>
           <DatePicker
-            className='container-select' 
+            className='container-select'
             showTimeSelect
             selected={dayCreate}
             onChange={handleSelectDateCreate}
             dateFormat={'dd/MM/yyyy'}
           />
         </div>
-        <h5 className='lable-filter' style={{paddingTop: 20, paddingRight: 20, paddingLeft: 20}}>Lọc theo giá:</h5>
+        <h5 className='lable-filter' style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20 }}>Lọc theo ngày cập nhật:</h5>
+        <div>
+          <DatePicker
+            className='container-select'
+            showTimeSelect
+            selected={dayUpdate}
+            onChange={handleSelectDateUpdate}
+            dateFormat={'dd/MM/yyyy'}
+          />
+        </div>
+        <h5 className='lable-filter' style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20 }}>Lọc theo thanh toán:</h5>
+        <div className='container-select'>
+          <select value={selectedPayStatus} onChange={handleSelectPayStatusChange}>
+            {paymentfilter.map((option, index) => (
+              <option key={index} value={option.id}>
+                {option.value}
+              </option>
+            ))}
+          </select>
+        </div>
+        <h5 className='lable-filter' style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20 }}>Lọc theo giá:</h5>
         <div className='container-select'>
           <select value={selectedPriceFilter} onChange={handleSelectPriceFilterChange}>
             {priceFilter.map((option, index) => (

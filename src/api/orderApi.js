@@ -25,6 +25,14 @@ const orderApi = {
         }});
     },
 
+    getListOrderProcess: () => {
+        const url = process.env.REACT_APP_API_URL + `orders/list-order-process`;
+        return axios.get(url, {
+            headers: {
+                Authorization: sessionStorage.getItem('accessToken'),
+        }});
+    },
+
     updateOrder: (id, params) => {
         console.log(id);
         console.log(params);

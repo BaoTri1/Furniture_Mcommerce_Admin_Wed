@@ -4,10 +4,6 @@
         "content": "Hồ sơ"
     },
     {
-        "icon": "bx bx-cog",
-        "content": "cài đặt"
-    },
-    {
         "icon": "bx bx-log-out-circle bx-rotate-180",
         "content": "Đăng xuất"
     }
