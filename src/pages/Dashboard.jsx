@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import queryString from 'query-string'
 import DatePicker from "react-datepicker";
@@ -9,13 +8,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import Chart from 'react-apexcharts'
 
 import StatusCard from '../components/status-card/StatusCard'
-import Table from '../components/table/Table'
-import Badge from '../components/badge/Badge'
 import { useToast } from '../context/toast'
 
 import serviceApi from '../api/serviceApi';
 
-import statusCards from '../assets/JsonData/status-card-data.json'
 
 const ChartOptions = {
   series: [{
@@ -114,113 +110,18 @@ const chartProductMostOptions = {
   },
 }
 
-
-
-const headProduct = [
-  'Sản phẩm',
-  'Số lượng'
-]
-
-const renderProductHead = (item, index) => (
-  <th key={index}>{item}</th>
-)
-
-const renderProductBody = (item, index) => (
-  <tr key={index}>
-    <td>{item.nameProduct}</td>
-    <td>{item.totalQuantity}</td>
-  </tr>
-)
-
-const lastesOrders = {
-  head: [
-    'order id',
-    'user',
-    'total price',
-    'date',
-    'status'
-  ],
-  body: [
-    {
-      'id': 'ORDER1',
-      'user': 'john doe',
-      'date': '10/10/2023',
-      'price': '$900',
-      'status': 'Đã sẵn sàng giao hàng'
-    },
-    {
-      'id': 'ORDER2',
-      'user': 'frank iva',
-      'date': '10/10/2023',
-      'price': '$800',
-      'status': 'Đang giao hàng'
-    },
-    {
-      'id': 'ORDER3',
-      'user': 'anthony baker',
-      'date': '10/10/2023',
-      'price': '$600',
-      'status': 'Đã giao hàng thành công'
-    },
-    {
-      'id': 'ORDER4',
-      'user': 'john doe',
-      'date': '10/10/2023',
-      'price': '$900',
-      'status': 'Đang chờ xử lý'
-    },
-  ]
-}
-
-const orderStatus = {
-  'Đang chờ xử lý': 'R1',
-  'Đã sẵn sàng giao hàng': 'R2',
-  'Đang giao hàng': 'R3',
-  'Đã giao hàng thành công': 'R4'
-}
-
 const VND = new Intl.NumberFormat('vi-VN', {
   style: 'currency',
   currency: 'VND',
 });
 
-const formatDate = (dateString) => {
-  var inputTime = new Date(dateString);
-
-  // Lấy năm và tháng
-  var year = inputTime.getUTCFullYear();
-  var month = ('0' + (inputTime.getUTCMonth() + 1)).slice(-2);
-
-  // Format lại theo yyyy-MM
-  var outputTimeStr = year + '-' + month;
-  return outputTimeStr;
-
-}
-
-const renderOrderHead = (item, index) => (
-  <th key={index}>{item}</th>
-)
-
-const renderOrderBody = (item, index) => (
-  <tr key={index}>
-    <td>{item.id}</td>
-    <td>{item.user}</td>
-    <td>{item.price}</td>
-    <td>{item.date}</td>
-    <td>
-      <Badge type={orderStatus[item.status]} content={item.status} />
-    </td>
-  </tr>
-)
-
 const Dashboard = () => {
 
   const themeReducer = useSelector(state => state.ThemeReducer.mode)
-  const { error, success } = useToast();
+  const { error } = useToast();
   const [numProduct, setNumProduct] = useState(0);
   const [numUser, setNumUser] = useState(0);
 
-  const [listProductMost, setListProductMost] = useState([]);
   const [chartProParCat, setchartProParCat] = useState(ChartOptions);
   const [chartMostProduct, setChartMostProduct] = useState(chartProductMostOptions);
   const [chartRevenue, setChartRevenue] = useState(ChartRevenueOptions);
@@ -266,10 +167,14 @@ const Dashboard = () => {
           let dataChart = []
           let categoryChart = []
           console.log(response.data.result);
-          response.data.result.map((item, index) => {
-            dataChart.push(item.totalProducts);
-            categoryChart.push(item.categoryName);
-          })
+          // response.data.result.map((item, index) => (
+          //   dataChart.push(item.totalProducts)
+          //   categoryChart.push(item.categoryName)
+          // ))
+          for (let i = 0; i < response.data.result.length; i++) {
+            dataChart.push(response.data.result[i].totalProducts)
+            categoryChart.push(response.data.result[i].categoryName)
+          }
           setchartProParCat({
             series: [{
               name: 'Sản phẩm',
@@ -330,10 +235,15 @@ const Dashboard = () => {
           let dataChart = []
           let labelChart = []
           console.log(response.data.products);
-          response.data.products.map((item, index) => {
-            dataChart.push(parseInt(item.totalSoldQuantity, 10));
-            labelChart.push(item.productName);
-          })
+          // response.data.products.map((item, index) => {
+          //   dataChart.push(parseInt(item.totalSoldQuantity, 10));
+          //   labelChart.push(item.productName);
+          // })
+          for(let i = 0; i < response.data.products.length; i++) {
+            dataChart.push(parseInt(response.data.products[i].totalSoldQuantity, 10));
+            labelChart.push(response.data.products[i].productName);
+          }
+
           console.log(dataChart);
           setChartMostProduct({
             series: dataChart,
@@ -363,10 +273,10 @@ const Dashboard = () => {
           console.log(response.data.result)
           let dataChart = []
           let labelChart = []
-          response.data.result.map((item, index) => {
-            dataChart.push(item.totalRevenue);
-            labelChart.push(item.categoryName);
-          })
+          for (let i = 0; i < response.data.result.length; i++){
+            dataChart.push(response.data.result[i].totalRevenue);
+            labelChart.push(response.data.result[i].categoryName);
+          }
           console.log(dataChart);
           setChartRevenue({
             series: [{

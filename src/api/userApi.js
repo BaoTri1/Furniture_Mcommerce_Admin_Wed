@@ -12,6 +12,14 @@ const userApi = {
             headers: {
                 Authorization: sessionStorage.getItem('accessToken'),
         }});
+    },
+
+    getInfo: () => {
+        const url = process.env.REACT_APP_API_URL + `users/info`;
+        return axios.get(url, {
+            headers: {
+                Authorization: sessionStorage.getItem('accessToken'),
+        }});
     }
 }
 

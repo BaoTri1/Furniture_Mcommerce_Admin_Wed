@@ -242,3 +242,32 @@ input:focus {
     color: var(--txt-color);
     background-color: var(--main-bg);
 }
+
+.btnOrder__Confirm {
+    height: 30px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    color: var(--txt-white);
+    background-color: var(--main-color-green);
+    box-shadow: var(--box-shadow);
+}
+
+.profile__image {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.profile__image > img{
+    width: 100%;
+}

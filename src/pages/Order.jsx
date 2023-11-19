@@ -12,11 +12,8 @@ import { useToast } from '../context/toast'
 import ConfirmDialog from '../components/confirmdialog/ConfirmDialog'
 import Paginate from '../components/paginate/paginate'
 import Badge from '../components/badge/Badge'
-import Dropdown from '../components/dropdown/Dropdown';
 
 import orderApi from '../api/orderApi'
-
-const dayjs = require('dayjs');
 
 const VND = new Intl.NumberFormat('vi-VN', {
   style: 'currency',
@@ -45,7 +42,6 @@ const renderOrderHead = (item, index) => (
 const orderHead = [
   'Mã',
   'Ngày tạo',
-  'Ngày cập nhật',
   'Khách hàng',
   'Trạng thái đơn hàng',
   'Thanh toán',
@@ -123,7 +119,8 @@ const Order = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [titleDialog, setTitleDialog] = useState('');
   const [contentDialog, setContentDialog] = useState('');
-  const [id, setID] = useState('');
+  const [action, setAction] = useState('');
+  const [order, setOrder] = useState({});
   const { error, success } = useToast();
 
   const typingTimeoutRef = useRef(null);
@@ -183,7 +180,6 @@ const Order = () => {
     <tr key={index}>
       <td>{item.idOrder}</td>
       <td>{formatDate(item.dayCreateAt)}</td>
-      <td>{formatDate(item.dayUpdateAt)}</td>
       <td>{item.nameCustomer}</td>
       <td><Badge type={orderStatus[item.name]} content={item.name} /></td>
       <td><Badge type={paymentStatus[item.payStatus]} content={item.payStatus === 1 ? 'Đã thanh toán' : 'Chưa thanh toán'} /></td>
@@ -194,21 +190,88 @@ const Order = () => {
       }}
         className='customLink'>
         <i className='bx bx-show' style={{ fontSize: '1.7rem' }}></i></Link></td>
-      <td><Link to={{
+      {/* <td><Link to={{
         pathname: `/orders/edit/${item.idOrder}`,
         state: { idOrder: item.idOrder, isEdit: true }
       }}
         className='customLink'>
         <i className='bx bx-edit-alt' style={{ fontSize: '1.7rem' }}></i></Link>
 
+      </td> */}
+      <td>
+        {
+          item.idStatus === 'R4' || item.idStatus === 'R5'  ? <></>
+          : <button className='btnOrder__Confirm' 
+            onClick={() => openDialogConfirm(
+              'Duyệt đơn hàng',
+              `Thay đổi trạng thái của đơn hàng ${item.idOrder}`,
+              item,
+              'Cập nhật đơn hàng'
+          )}
+          >Duyệt</button>
+        }
+            <br />
+        { 
+            item.idStatus === 'R1' ? <button className='btnOrder__Confirm' style={{backgroundColor: '#fb0b12'}}
+              onClick={() => openDialogConfirm(
+                'Hủy đơn hàng',
+                `Bạn chắc chắn hủy đơn hàng ${item.idOrder}`,
+                item,
+                'Hủy đơn hàng'
+                
+            )}
+            >Hủy</button>
+            : <></> 
+        }
       </td>
     </tr>
   )
 
-  const openDialogConfirm = (title, content, idDelete) => {
+  const handleChangeStatusOrder = async () => {
+      if(action === 'Cập nhật đơn hàng'){
+        console.log('Cập nhật đơn hàng', order.idOrder)
+        try {
+          const response = await orderApi.updateStatusOrder(order.idOrder, {
+            idStatus: order.idStatus,
+            payStatus: order.payStatus,
+        });
+        console.log(response)
+        if (response.data.errCode !== 0) {
+            error(response.data.errMessage)
+        } else {
+            success(response.data.errMessage)
+            window.location.reload();
+        }   
+        } catch (error) {
+          console.error('Call API failed', error);
+        }
+      }
+      else if(action === 'Hủy đơn hàng'){
+        console.log('Hủy đơn hàng', order.idOrder)
+        try {
+          const response = await orderApi.cancleOrder(order.idOrder, {
+            status: order.idStatus,
+            products: order.detailorder,
+        });
+        console.log(response)
+        if (response.data.errCode !== 0) {
+            error(response.data.errMessage)
+        } else {
+            success(response.data.errMessage)
+            window.location.reload();
+        }   
+        } catch (error) {
+          console.error('Call API failed', error);
+        }
+      }
+      setopen(!open);
+  }
+
+  const openDialogConfirm = (title, content, order, action) => {
     setTitleDialog(title);
     setContentDialog(content);
-    setID(idDelete);
+    setOrder(order);
+    setAction(action);
     setopen(!open);
   }
 
@@ -252,17 +315,6 @@ const Order = () => {
       ...filterOrder,
       page: event.selected + 1
     })
-  }
-
-  const handleDelete = async () => {
-    // console.log('idProduct', id);
-    // const reponse = await productApi.deleteproduct(id);
-    // if (reponse.data.results.errCode !== 0) {
-    //   error(reponse.data.results.errMessage)
-    // } else {
-    //   success(reponse.data.results.errMessage)
-    //   window.location.reload();
-    // }
   }
 
   const handleSelectStatusChange = (event) => {
@@ -426,7 +478,7 @@ const Order = () => {
         </div>
       </div>
       {open && <ConfirmDialog
-        clickConfirm={handleDelete}
+        clickConfirm={handleChangeStatusOrder}
         clickClose={closeDialogConfirm}
         title={titleDialog}
         content={contentDialog}

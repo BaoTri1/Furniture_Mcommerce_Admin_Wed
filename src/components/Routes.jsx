@@ -14,6 +14,9 @@ import FormProduct from './form/form_product/FormProduct';
 import FormDiscount from './form/form_discount/FormDiscount';
 import Order from '../pages/Order';
 import FormOrder from './form/form_order/FormOrder';
+import RatingAndReview from '../pages/RatingAndReview';
+import ListReview from './list/ListReview/ListReview';
+import Profile from '../pages/Profile';
 
 const Routes = () => {
   return (
@@ -36,6 +39,9 @@ const Routes = () => {
         <Route path='/orders' exact component={Order}/>
         <Route path='/orders/:orders' component={FormOrder}/>
         <Route path='/orders/edit/:orders' component={FormOrder}/>
+        <Route path='/reviews' exact component={RatingAndReview}/>
+        <Route path='/reviews/:product' component={ListReview}/>
+        <Route path='/profile' exact component={Profile}/>
     </Switch>
   )
 }

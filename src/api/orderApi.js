@@ -42,6 +42,26 @@ const orderApi = {
                 Authorization: sessionStorage.getItem('accessToken'),
         }});
     },
+
+    updateStatusOrder: (id, params) => {
+        console.log(id);
+        console.log(params);
+        const url = process.env.REACT_APP_API_URL + `orders/updateStatus/?idOrder=${id}`;
+        return axios.put(url, params, {
+            headers: {
+                Authorization: sessionStorage.getItem('accessToken'),
+        }});
+    },
+
+    cancleOrder: (id, params) => {
+        console.log(id);
+        console.log(params);
+        const url = process.env.REACT_APP_API_URL + `orders/cancleOrder/?idOrder=${id}`;
+        return axios.put(url, params, {
+            headers: {
+                Authorization: sessionStorage.getItem('accessToken'),
+        }});
+    },
 }
 
 export default orderApi;

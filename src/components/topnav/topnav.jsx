@@ -9,15 +9,10 @@ import Dropdown from '../dropdown/Dropdown'
 import ThemeMenu from '../thememenu/ThemeMenu'
 import orderApi from '../../api/orderApi'
 
-import notifications from '../../assets/JsonData/notification.json'
-import user_menu from '../../assets/JsonData/user_menus.json'
-
 const curr_user = {
   display_name: sessionStorage.getItem('name'),
   image: sessionStorage.getItem('avatar')
 }
-
-console.log(curr_user.display_name, curr_user.image)
 
 const renderUserToggle = (user) => (
   <div className="topnav__right-user">
@@ -46,19 +41,35 @@ const formatDate = (dateString) => {
 }
 
 const renderUserMenu = (item, index) => (
-  <Link to='/' key={index}>
-      <div className='notification-item'>
+  <Link to={item.path} key={index}>
+      <div className='notification-item' onClick={item.onClick}>
           <i className={item.icon}></i>
           <span>{item.content}</span>  
       </div>   
   </Link>
 )
 
-const rendernotification = (item, index) => (
-  <div className="notification-item" key={index}>
-      <span>Chưa có đơn hàng chưa xử lý nào</span>
-  </div>
-)
+const UserMenu = [
+  {
+    "icon": "bx bx-user",
+    "content": "Hồ sơ",
+    "onClick": () => {
+
+    },
+    "path": '/profile'
+  },
+  {
+    "icon": "bx bx-log-out-circle bx-rotate-180",
+    "content": "Đăng xuất",
+    "onClick": () => {
+      sessionStorage.removeItem('name');
+      sessionStorage.removeItem('avatar');
+      sessionStorage.removeItem('accessToken');
+    },
+    "path": '/'
+  },
+
+]
 
 const Topnav = () => {
 
@@ -104,7 +115,7 @@ const Topnav = () => {
         <div className="top__right-item">
           <Dropdown
             customToggle={() => renderUserToggle(curr_user)}
-            contentData={user_menu}
+            contentData={UserMenu}
             renderItems={(item, index) => renderUserMenu(item, index)}
           />
         </div>
