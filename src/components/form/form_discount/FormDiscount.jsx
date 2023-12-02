@@ -92,11 +92,6 @@ const FormDiscount = () => {
             return;
         }
 
-        if (!quantity || quantity <= 0) {
-            error("Số lượng giảm giá không hợp lệ!");
-            return;
-        }
-
         if(startDate < dayCurrent){
             console.log('start date', startDate);
             console.log(dayCurrent)
@@ -159,8 +154,8 @@ const FormDiscount = () => {
           document.getElementById('inputDiscount').value = discountInfo.nameDiscount;
           setValueDiscount(discountInfo.value);
           document.getElementById('inputPrice').value = discountInfo.value;
-          setQuantity(discountInfo.numDiscount);
-          document.getElementById('inputQuantity').value = discountInfo.numDiscount;
+          //setQuantity(discountInfo.numDiscount);
+          //document.getElementById('inputQuantity').value = discountInfo.numDiscount;
           setStartDate(new Date(discountInfo.dayStart));
           setEndtDate(new Date(discountInfo.dayEnd));
           setIsEdit(true);
@@ -173,23 +168,23 @@ const FormDiscount = () => {
         setSelectedOption(event.target.value);
     };
 
-    const handleQuatityChange = (e) => {
-        console.log('So luong: ', e.target.value);
-        let newQuantity = +e.target.value
-        setQuantity(newQuantity);
-    }
+    // const handleQuatityChange = (e) => {
+    //     console.log('So luong: ', e.target.value);
+    //     let newQuantity = +e.target.value
+    //     setQuantity(newQuantity);
+    // }
 
-    const handleMinus = () => {
-        if (quantity > 1)
-            setQuantity(quantity - 1);
-        console.log('So luong: ', quantity);
-    };
+    // const handleMinus = () => {
+    //     if (quantity > 1)
+    //         setQuantity(quantity - 1);
+    //     console.log('So luong: ', quantity);
+    // };
 
-    const handlePlus = () => {
-        setQuantity(quantity + 1);
-        console.log('So luong: ', quantity);
-        console.log('So luong type: ', typeof (quantity));
-    };
+    // const handlePlus = () => {
+    //     setQuantity(quantity + 1);
+    //     console.log('So luong: ', quantity);
+    //     console.log('So luong type: ', typeof (quantity));
+    // };
 
 
     return (
@@ -239,7 +234,7 @@ const FormDiscount = () => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                         <td className='table-td-label'><label htmlFor="quantity-discount">Số lượng</label></td>
                                         <td style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                                             <div className="icon-wrapper" onClick={handleMinus}>
@@ -254,7 +249,7 @@ const FormDiscount = () => {
                                                 <i className='bx bx-plus'></i>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr> */}
                                     <tr>
                                         <td className='table-td-label'><label htmlFor="select-date-start">Ngày bắt đầu khuyến mãi</label></td>
                                         <td>

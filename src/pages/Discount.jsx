@@ -15,7 +15,6 @@ const discountHead = [
     'Tên khuyến mãi',
     'Sản phẩm khuyến mãi',
     'Giá trị(%)',
-    'Số lượng',
     'Ngày bắt đầu',
     'Ngày kết thúc',
     '',
@@ -64,7 +63,6 @@ const Discount = () => {
             <td>{item.nameDiscount}</td>
             <td>{item.nameProduct}</td>
             <td>{item.value}</td>
-            <td>{item.numDiscount}</td>
             <td>{formatDate(item.dayStart)}</td>
             <td>{formatDate(item.dayEnd)}</td>
             <td><Link to={{

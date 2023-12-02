@@ -176,6 +176,7 @@ const FormProduct = () => {
                     const responseUploadDetailImage = await productApi.updateDetailImageProduct(uploadDetailImageProduct);
                     if (responseUploadDetailImage.data.results.errCode === 0) {
                         success(responseUploadDetailImage.data.results.errMessage)
+                        window.location.reload();
                     } else {
                         error(responseUploadDetailImage.data.results.errMessage)
                     }

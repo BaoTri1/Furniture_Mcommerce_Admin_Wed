@@ -257,6 +257,14 @@ const Dashboard = () => {
         } else {
           console.log(response.data.errMessage)
           error(response.data.errMessage)
+          setChartMostProduct({
+            series: [],
+            options: {
+              ...chartMostProduct.options,
+              labels: [],
+            }
+
+          })
         }
 
       } catch (error) {
@@ -299,6 +307,24 @@ const Dashboard = () => {
         } else {
           console.log(response.data.errMessage)
           error(response.data.errMessage)
+          setChartRevenue({
+            series: [{
+              name: 'doanh thu (VND)',
+              data: []
+            }],
+            options: {
+              ...ChartRevenueOptions.options,
+              xaxis: {
+                categories:[],
+                labels: {
+                  style: {
+                    colors: colors,
+                    fontSize: '14px'
+                  }
+                }
+              }
+            }
+          })
         }
 
       } catch (error) {
@@ -318,6 +344,7 @@ const Dashboard = () => {
         } else {
           console.log(response.data.errMessage)
           error(response.data.errMessage)
+          setListOrderStatus([])
         }
 
       } catch (error) {
@@ -341,43 +368,6 @@ const Dashboard = () => {
   return (
     <div>
       <h2 className="page-header">Thống kê</h2>
-      <div className="row">
-        <div className="col-3">
-          <div className="row full-height">
-            <div className='col-12'>
-              <StatusCard
-                icon='bx bx-shopping-bag'
-                count={numProduct}
-                title='Tổng số sản phẩm của cửa hàng'
-              />
-            </div>
-            <div className='col-12'>
-              <StatusCard
-                icon='bx bx-user-pin'
-                count={numUser}
-                title='người dùng đăng ký tài khoản'
-              />
-            </div>
-          </div>
-        </div>
-        <div className="col-9">
-          <div className="card full-height">
-            <div className="card__header">
-              <h3>số lượng sản phẩm theo từng danh mục</h3>
-            </div>
-            {/*Biểu đồ*/}
-            <Chart
-              options={themeReducer === 'theme-mode-dark' ? {
-                ...chartProParCat.options, theme: { mode: 'dark' },
-              } :
-                { ...chartProParCat.options, theme: { mode: 'light' }, }}
-              series={chartProParCat.series}
-              type='bar'
-              height='100%'
-            />
-          </div>
-        </div>
-      </div>
       <div className="page-filter" style={{ justifyContent: 'flex-end' }}>
         <h5 className='lable-filter' style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20 }}>Chọn tháng:</h5>
         <div>
@@ -462,6 +452,43 @@ const Dashboard = () => {
             </div>
           ))
         }
+      </div>
+      <div className="row">
+        <div className="col-3">
+          <div className="row full-height">
+            <div className='col-12'>
+              <StatusCard
+                icon='bx bx-shopping-bag'
+                count={numProduct}
+                title='Tổng số mặt hàng đang bán của cửa hàng'
+              />
+            </div>
+            <div className='col-12'>
+              <StatusCard
+                icon='bx bx-user-pin'
+                count={numUser}
+                title='người dùng đăng ký tài khoản'
+              />
+            </div>
+          </div>
+        </div>
+        <div className="col-9">
+          <div className="card full-height">
+            <div className="card__header">
+              <h3>số lượng sản phẩm theo từng danh mục</h3>
+            </div>
+            {/*Biểu đồ*/}
+            <Chart
+              options={themeReducer === 'theme-mode-dark' ? {
+                ...chartProParCat.options, theme: { mode: 'dark' },
+              } :
+                { ...chartProParCat.options, theme: { mode: 'light' }, }}
+              series={chartProParCat.series}
+              type='bar'
+              height='100%'
+            />
+          </div>
+        </div>
       </div>
     </div>
   )

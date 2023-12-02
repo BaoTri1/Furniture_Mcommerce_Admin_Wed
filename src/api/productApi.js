@@ -169,7 +169,7 @@ const productApi = {
 
     updateAvatarProduct: (params) => {
         const url = process.env.REACT_APP_API_URL + `images/updateavatarproduct`;
-        return axios.post(url, params, {
+        return axios.put(url, params, {
             headers: {
                 Authorization: sessionStorage.getItem('accessToken'),
         }});
